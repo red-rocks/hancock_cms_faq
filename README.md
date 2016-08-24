@@ -1,8 +1,9 @@
 # HancockCmsFaq
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hancock_cms_faq`. To experiment with that code, run `bin/console` for an interactive prompt.
+### Remaded from [EnjoyCMSFaq](https://github.com/enjoycreative/enjoy_cms_faq)
 
-TODO: Delete this and the text above, and describe your gem
+FAQ system for [HancockCMS](https://github.com/red-rocks/hancock_cms).
+Question send form, question categories, captcha support
 
 ## Installation
 
@@ -11,6 +12,16 @@ Add this line to your application's Gemfile:
 ```ruby
 gem 'hancock_cms_faq'
 ```
+
+Then add this
+```ruby
+gem "recaptcha", require: "recaptcha/rails" # Recaptcha
+```
+or this
+```ruby
+gem "glebtv-simple_captcha" # simple_captcha
+```
+before it for captcha you need. And configure it. If you need
 
 And then execute:
 
@@ -22,7 +33,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add in config/routes.rb
+
+```ruby
+  hancock_cms_faq_routes
+```
 
 ## Development
 
