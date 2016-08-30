@@ -26,6 +26,13 @@ module Hancock::Faq
           validates_presence_of :author_name
         end
         validates_presence_of :question_text, :author_email
+
+        def self.manager_can_add_actions
+          [:nested_set]
+        end
+        def self.rails_admin_add_visible_actions
+          [:nested_set]
+        end
       end
 
       def name

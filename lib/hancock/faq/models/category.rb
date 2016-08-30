@@ -15,16 +15,13 @@ module Hancock::Faq
 
       included do
         manual_slug :name
-      end
 
-      def clean_excerpt
-        self.excerpt ||= ""
-        Rails::Html::FullSanitizer.new.sanitize(self.excerpt.strip)
-      end
-
-      def clean_content
-        self.content ||= ""
-        Rails::Html::FullSanitizer.new.sanitize(self.content.strip)
+        def self.manager_can_add_actions
+          [:nested_set]
+        end
+        def self.rails_admin_add_visible_actions
+          [:nested_set]
+        end
       end
 
       def question_class
