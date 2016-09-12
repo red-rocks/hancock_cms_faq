@@ -1,0 +1,11 @@
+- label = settings_scope.author_name_label(default: t('hancock.faq_plugin.fields.author_name.label'), label: "Заголовок поля ФИО", cache_keys: cache_key)
+- placeholder = settings_scope.author_name_placeholder(default: t('hancock.faq_plugin.fields.author_name.placeholder'), label: "Placeholder поля ФИО", cache_keys: cache_key)
+= f.input :author_name, label: label, input_html: {placeholder: placeholder, autofocus: true}
+
+- label = settings_scope.author_email_label(default: t('hancock.faq_plugin.fields.author_email.label'), label: "Заголовок поля e-mail", cache_keys: cache_key)
+- placeholder = settings_scope.author_email_placeholder(default: t('hancock.faq_plugin.fields.author_email.placeholder'), label: "Placeholder поля e-mail", cache_keys: cache_key)
+= f.input :author_email, label: label, input_html: {placeholder: placeholder}
+
+- label = settings_scope.question_text_label(default: t('hancock.faq_plugin.fields.question_text.label'), label: "Заголовок поля текст вопроса", cache_keys: cache_key)
+- placeholder = settings_scope.question_text_placeholder(default: t('hancock.faq_plugin.fields.question_text.placeholder'), label: "Placeholder поля текст вопроса", cache_keys: cache_key)
+= f.input :question_text, as: :text, label: label, input_html: {placeholder: placeholder}

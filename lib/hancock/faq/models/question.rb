@@ -28,19 +28,27 @@ module Hancock::Faq
         validates_presence_of :question_text, :author_email
 
         def self.manager_can_add_actions
-          [:nested_set]
+          ret = [:nested_set]
+          ret << :model_settings if Hancock::Faq.config.model_settings_support
+          ret << :model_accesses if Hancock::Faq.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::Faq.config.ra_comments_support
+          ret.freeze
         end
         def self.rails_admin_add_visible_actions
-          [:nested_set]
+          ret = [:nested_set]
+          ret << :model_settings if Hancock::Faq.config.model_settings_support
+          ret << :model_accesses if Hancock::Faq.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::Faq.config.ra_comments_support
+          ret.freeze
         end
       end
 
       def name
-        "#{self.question_text_output} (#{self.author_name_output})"
+        "#{self.question_text_output} (#{self.author_name_output})".freeze
       end
 
       def full_name
-        "#{self.author_name_output}: \"#{self.question_text_output}\""
+        "#{self.author_name_output}: \"#{self.question_text_output}\"".freeze
       end
 
       def category_class

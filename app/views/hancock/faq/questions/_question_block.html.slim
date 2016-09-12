@@ -1,30 +1,31 @@
-.qtable
-  - _category = q.category
-  -  if _category
-    = link_to _category.name, hancock_faq_category_path(_category), title: _category.name
+- cache q do
+  .qtable
+    - _category = q.category
+    -  if _category
+      = link_to _category.name, hancock_faq_category_path(_category), title: _category.name
 
-  .qtext_block
-    .questionblock
-      .questiontext
-        .qname
-          p= q.author_name
-        .qemail
-          p= q.author_email
-        .qdate
-          p= q.created_at
-        .qtext
-          - if q.question_text_after_editing.blank?
-            p== q.question_text
-          - else
-            p== q.question_text_after_editing
+    .qtext_block
+      .questionblock
+        .questiontext
+          .qname
+            p= q.author_name
+          .qemail
+            p= q.author_email
+          .qdate
+            p= q.created_at
+          .qtext
+            - if q.question_text_after_editing.blank?
+              p== q.question_text
+            - else
+              p== q.question_text_after_editing
 
-    .answertext
-      - if q.answered or (current_user and current_user.admin?)
-        .aqname
-          p= q.answer_author_name
-        .aqdate
-          p= q.answered_time
-        .aqtext
-          p== q.answer_text
+      .answertext
+        - if q.answered or (current_user and current_user.admin?)
+          .aqname
+            p= q.answer_author_name
+          .aqdate
+            p= q.answered_time
+          .aqtext
+            p== q.answer_text
 
-.mentionsdivider
+  .mentionsdivider

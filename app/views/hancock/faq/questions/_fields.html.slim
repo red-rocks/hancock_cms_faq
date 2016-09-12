@@ -1,0 +1,11 @@
+- label = t('hancock.faq_plugin.fields.author_name.label')
+- placeholder = t('hancock.faq_plugin.fields.author_name.placeholder')
+= f.input :author_name, label: label, input_html: {placeholder: placeholder, autofocus: true}
+
+- label = t('hancock.faq_plugin.fields.author_email.label')
+- placeholder = t('hancock.faq_plugin.fields.author_email.placeholder')
+= f.input :author_email, label: label, input_html: {placeholder: placeholder}
+
+- label = t('hancock.faq_plugin.fields.question_text.label')
+- placeholder = t('hancock.faq_plugin.fields.question_text.placeholder')
+= f.input :question_text, as: :text, label: label, input_html: {placeholder: placeholder}

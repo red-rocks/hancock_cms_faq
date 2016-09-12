@@ -3,6 +3,14 @@ module Hancock::Faq
     module Questions
       extend ActiveSupport::Concern
 
+      included do
+        if Hancock::Faq.config.breadcrumbs_on_rails_support
+          add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_Faq_faq_path
+        end
+
+        helper_method :cache_fields?, :cache_key, :fields_partial, :settings_scope, :hancock_faq_update_captcha_path
+      end
+
       def index
         @questions = question_class.enabled.sorted.to_a
         # index_crumbs
@@ -49,17 +57,79 @@ module Hancock::Faq
         end
 
         if @question.send(_method)
-          @message = "Успешно создано все"
+          after_create
+          if request.xhr? && process_ajax
+            ajax_success
+          else
+            redirect_after_done
+          end
         else
-          @message = "Косяки есть"
+          render_faq_error
         end
+      end
 
-        if request.xhr?
-          render layout: false
+      def update_captcha
+        render layout: false
+      end
+
+      def hancock_faq_update_captcha_path
+        url_for(action: :update_captcha, time: Time.new.to_i, only_path: true)
+      end
+      def cache_fields?
+        ['new', 'index'].include? action_name
+      end
+      def cache_key
+        'hancock_faq_question_fields'.freeze
+      end
+      def fields_partial
+        "hancock/faq/questions/#{(Hancock::Faq.config.model_settings_support ? 'fields' : 'fields_with_settings')}".freeze
+      end
+      def settings_scope
+        if Hancock::Faq.config.model_settings_support
+          question_class.settings
+        elsif defined?(Settings)
+          Settings.ns('FAQ')
+        else
+          nil
         end
       end
 
       private
+      def render_faq_error
+        if request.xhr? && process_ajax
+          render partial: form_partial, status: 422
+          # render json: {errors: @contact_message.errors}, status: 422
+        else
+          flash.now[:alert] = @question.errors.full_messages.join("\n")
+          render action: Hancock::Faq.configuration.recreate_contact_message_action, status: 422
+        end
+      end
+      def process_ajax
+        true
+      end
+      def ajax_success
+        render partial: success_partial
+        # render json: {ok: true}
+      end
+      def redirect_after_done
+        redirect_to action: :sent
+      end
+      def xhr_checker
+        if request.xhr?
+          render layout: false
+        end
+      end
+      def after_initialize
+      end
+      def after_create
+        # overrideable hook for updating message
+      end
+      def form_partial
+        "hancock/faq/question/form"
+      end
+      def success_partial
+        "hancock/faq/question/success"
+      end
       def question_params
         params[:hancock_faq_question].permit(:question_text, :author_name, :author_email, :captcha, :captcha_key)
       end
@@ -71,28 +141,6 @@ module Hancock::Faq
         Hancock::Faq::Question
       end
 
-      # def item_crumbs
-      #   if @item
-      #     if @item.item_categories.enabled.count == 1
-      #       if @parent_seo_page
-      #         _crumb = @parent_seo_page.name
-      #         _crumb = @parent_seo_page.title if _crumb.blank?
-      #         _crumb = @parent_seo_page.h1 if _crumb.blank?
-      #         add_crumb _crumb, @parent_seo_page.fullpath
-      #       end
-      #
-      #       @item_category = @item.item_categories.enabled.first
-      #       _crumb = @item_category.name
-      #       _crumb = @item_category.title if _crumb.blank?
-      #       _crumb = @item_category.h1 if _crumb.blank?
-      #       add_crumb _crumb, item_category_path(@item_category)
-      #     end
-      #     _crumb = @item.name
-      #     _crumb = @item.title if _crumb.blank?
-      #     _crumb = @item.h1 if _crumb.blank?
-      #     add_crumb _crumb, item_path(@item)
-      #   end
-      # end
     end
   end
 end

@@ -1,29 +1,55 @@
 - @question ||= Hancock::Faq::Question.new
-- if @question.new_record?
-  = simple_form_for @question, url: hancock_faq_questions_path do |f|
-    - unless @message.blank?
-      h3= @message
-    .inputtextblock_q
-    
-      - label = Settings.ns('faq_form').author_name_label( default: "ФИО", label: "Заголовок поля ФИО")
-      = f.input :author_name, label: label
-      
-      - label = Settings.ns('faq_form').author_email_label( default: "E-mail", label: "Заголовок поля E-mail")
-      = f.input :author_email, as: :email, label: label
-      
-      - label = Settings.ns('faq_form').question_text_label( default: "Текст вопроса", label: "Заголовок поля Текст вопроса")
-      = f.input :question_text, as: :text, label: label
-      
-      
-      - if Hancock::Faq.configuration.save_with_captcha
-        .question_captcha
-          - label = Settings.ns('faq_form').captcha_label( default: "Код проверки", label: "Заголовок поля Код проверки")
-          = f.simple_captcha label: label, required: true
-          - unless @question.errors[:captcha].blank?
-            span.error= @question.errors[:captcha].join("<br />").html_safe
+/ = simple_form_for @contact_message, url: hancock_feedback_contacts_path do |f|
+= simple_form_for @question, url: hancock_faq_questions_path, html: {data: {remote: true }} do |f|
+  - if cache_fields?
+    - cache cache_key, skip_digest: true do
+      = render partial: fields_partial, locals: {f: f, cache_key: "views/#{cache_key}"}
+  - else
+    = render partial: fields_partial, locals: {f: f}
+  
+  - if Hancock::Faq.config.captcha
+    - if Hancock::Faq.config.recaptcha_support
+      .input
+        - if @recaptcha_error
+          span.error.recaptcha_error= @recaptcha_error
+        = recaptcha_tags
+    - elsif Hancock::Faq.config.simple_captcha_support
+      = render partial: "hancock/faq/questions/simple_captcha", locals: {f: f}
         
-      - label = Settings.ns('faq_form').submit_label( default: "Отправить", label: "Заголовок кнопки Отправить")
-      = f.button :submit, label
-- else
-  - unless @message.blank?
-    h3= @message
+  - if Hancock::Faq.config.model_settings_support
+    - label = settings_scope.submit_label(default: t('hancock.send'), label: "Текст на кнопке отправки")
+  - else
+    - label = t('hancock.send')
+  = f.submit label
+
+
+
+/ - @question ||= Hancock::Faq::Question.new
+/ - if @question.new_record?
+/   = simple_form_for @question, url: hancock_faq_questions_path do |f|
+/     - unless @message.blank?
+/       h3= @message
+/     .inputtextblock_q
+/     
+/       - label = Settings.ns('faq_form').author_name_label( default: "ФИО", label: "Заголовок поля ФИО")
+/       = f.input :author_name, label: label
+/       
+/       - label = Settings.ns('faq_form').author_email_label( default: "E-mail", label: "Заголовок поля E-mail")
+/       = f.input :author_email, as: :email, label: label
+/       
+/       - label = Settings.ns('faq_form').question_text_label( default: "Текст вопроса", label: "Заголовок поля Текст вопроса")
+/       = f.input :question_text, as: :text, label: label
+/       
+/       
+/       - if Hancock::Faq.configuration.save_with_captcha
+/         .question_captcha
+/           - label = Settings.ns('faq_form').captcha_label( default: "Код проверки", label: "Заголовок поля Код проверки")
+/           = f.simple_captcha label: label, required: true
+/           - unless @question.errors[:captcha].blank?
+/             span.error= @question.errors[:captcha].join("<br />").html_safe
+/         
+/       - label = Settings.ns('faq_form').submit_label( default: "Отправить", label: "Заголовок кнопки Отправить")
+/       = f.button :submit, label
+/ - else
+/   - unless @message.blank?
+/     h3= @message

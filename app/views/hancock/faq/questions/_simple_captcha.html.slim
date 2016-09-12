@@ -1,0 +1,9 @@
+- label = t('hancock.faq_plugin.fields.captcha.label')
+- placeholder = t('hancock.faq_plugin.fields.captcha.placeholder')
+- update_captcha = link_to ' (обн)', hancock_faq_update_captcha_path, class: 'update_captcha_link'
+- if Hancock::Faq.config.model_settings_support
+  - label = settings_scope.simple_captcha_label(default: label, label: "Заголовок поля Код проверки")
+  - placeholder = settings_scope.simple_captcha_placeholder(default: placeholder, label: "Placeholder поля Код проверки")
+  = f.input :captcha, as: :simple_captcha, label: label, input_html: {placeholder: placeholder, update_captcha: update_captcha}, required: true
+- else
+  = f.input :captcha, as: :simple_captcha, label: label, input_html: {placeholder: placeholder, update_captcha: update_captcha}, required: true

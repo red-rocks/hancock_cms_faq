@@ -37,3 +37,29 @@ ru:
           attributes:
             author_email:
               invalid_email_address: "Некорректный e-mail"
+
+
+    faq_plugin:
+      fields:
+        author_name:
+          label: 'ФИО'
+          placeholder: 'ФИО'
+        author_email:
+          label: E-mail
+          placeholder: E-mail
+        # phone:
+        #   label: Телефон
+        #   placeholder: Телефон
+        question_text:
+          label: Сообщение
+          placeholder: Сообщение
+        captcha:
+          label: "Введите код с картинки"
+          placeholder: "Введите код с картинки"
+
+
+
+  admin:
+    scopes:
+      rails_admin_settings~setting:
+        ns_rails_admin_model_settings_hancock_faq_question: 'FAQ'
