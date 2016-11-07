@@ -14,6 +14,10 @@ module Hancock::Faq
       include Hancock::Faq.orm_specific('Category')
 
       included do
+        if Hancock::Feedback.config.model_settings_support
+          include RailsAdminModelSettings::ModelSettingable
+        end
+        
         manual_slug :name
 
         def self.manager_can_add_actions

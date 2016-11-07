@@ -1,0 +1,36 @@
+class <%= camelcased_class_name %> < Hancock::Faq::Category
+
+  def self.question_class
+    <%= camelcased_question_class_name %>
+  end
+
+
+  ############# rails_admin ##############
+  def self.rails_admin_add_fields
+    [] #super
+  end
+
+  def self.rails_admin_add_config(config)
+    #super(config)
+  end
+
+  def admin_can_user_defined_actions
+    [].freeze
+  end
+  def admin_cannot_user_defined_actions
+    [].freeze
+  end
+  def manager_can_user_defined_actions
+    [].freeze
+  end
+  def manager_cannot_user_defined_actions
+    [].freeze
+  end
+  def rails_admin_user_defined_visible_actions
+    [].freeze
+  end
+
+  rails_admin(&Hancock::Faq::Admin::Category.config(rails_admin_add_fields) { |config|
+    rails_admin_add_config(config)
+  })
+end

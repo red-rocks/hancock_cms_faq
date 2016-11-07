@@ -30,43 +30,34 @@ module Hancock::Faq
             field :name
             # field :sidebar_title, :string
 
-            group :URL do
-              active false
-              field :slugs, :hancock_slugs
-              field :text_slug
-            end
+            group :URL, &Hancock::Admin.url_block
+            # group :URL do
+            #   active false
+            #   field :slugs, :hancock_slugs
+            #   field :text_slug
+            # end
             # field :image, :hancock_image
 
+            # group :content, &Hancock::Admin.content_block
             group :content do
               active false
               field :excerpt, :hancock_html
               field :content, :hancock_html
             end
 
-            group :seo do
-              active false
-              field :seo do
-                active true
-              end
-            end
-            group :sitemap_data do
-              active false
-              field :sitemap_data do
-                active true
-              end
+            if Hancock::Faq.config.seo_support
+              group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block
+              # group :seo do
+              #   active false
+              #   field :seo
+              # end
+              # group :sitemap_data do
+              #   active false
+              #   field :sitemap_data
+              # end
             end
 
-            fields.each_pair do |name, type|
-              if type.nil?
-                field name
-              else
-                if type.is_a?(Array)
-                  field name, type[0], &type[1]
-                else
-                  field name, type
-                end
-              end
-            end
+            Hancock::RailsAdminGroupPatch::hancock_cms_group(self, fields)
 
 
             group :questions do
@@ -96,17 +87,7 @@ module Hancock::Faq
             field :excerpt
             field :content
 
-            fields.each_pair do |name, type|
-              if type.nil?
-                field name
-              else
-                if type.is_a?(Array)
-                  field name, type[0], &type[1]
-                else
-                  field name, type
-                end
-              end
-            end
+            Hancock::RailsAdminGroupPatch::hancock_cms_group(self, fields)
 
             field :questions do
               read_only true

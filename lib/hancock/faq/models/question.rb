@@ -14,6 +14,10 @@ module Hancock::Faq
       include Hancock::Faq.orm_specific('Question')
 
       included do
+        if Hancock::Feedback.config.model_settings_support
+          include RailsAdminModelSettings::ModelSettingable
+        end
+        
         manual_slug :full_name
 
         if Hancock::Faq.config.simple_captcha_support

@@ -1,0 +1,37 @@
+class <%= camelcased_class_name %> < Hancock::Faq::Question
+
+  has_and_belongs_to_many :categories, class_name: "<%= camelcased_class_name %>Category", inverse_of: nil
+  alias :<%= underscored_class_name %>_categories :categories
+
+  has_and_belongs_to_many :related_questions, :class_name => "<%= camelcased_class_name %>", :inverse_of => :related_questions
+  alias :related_<%= underscored_pluralized_class_name %> :related_questions
+
+  ############# rails_admin ##############
+  def self.rails_admin_add_fields
+    [] #super
+  end
+
+  def self.rails_admin_add_config(config)
+    #super(config)
+  end
+
+  def admin_can_user_defined_actions
+    [].freeze
+  end
+  def admin_cannot_user_defined_actions
+    [].freeze
+  end
+  def manager_can_user_defined_actions
+    [].freeze
+  end
+  def manager_cannot_user_defined_actions
+    [].freeze
+  end
+  def rails_admin_user_defined_visible_actions
+    [].freeze
+  end
+
+  rails_admin(&Hancock::Faq::Admin::Question.config(rails_admin_add_fields) { |config|
+    rails_admin_add_config(config)
+  })
+end

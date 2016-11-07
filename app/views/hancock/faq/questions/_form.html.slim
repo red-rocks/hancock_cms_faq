@@ -1,11 +1,22 @@
-- @question ||= Hancock::Faq::Question.new
-/ = simple_form_for @contact_message, url: hancock_feedback_contacts_path do |f|
+ruby:
+  is_cache_fields ||= ['new', 'index'].include? action_name
+  cache_key ||= 'hancock_faq_contacts_fields'.freeze
+  if Hancock::Faq.config.model_settings_support
+    settings_scope ||= Hancock::Faq::Question.settings
+  elsif defined?(Settings)
+    settings_scope ||= Settings.ns('faq')
+  end
+  fields_partial ||= "hancock/faq/questions/#{(Hancock::Faq.config.model_settings_support ? 'fields_with_settings' : 'fields')}".freeze
+  recaptcha_options ||= {}
+  @question ||= Hancock::Faq::Question.new
+  
+/ = simple_form_for @contact_message, url: hancock_faq_contacts_path do |f|
 = simple_form_for @question, url: hancock_faq_questions_path, html: {data: {remote: true }} do |f|
-  - if cache_fields?
+  - if is_cache_fields
     - cache cache_key, skip_digest: true do
-      = render partial: fields_partial, locals: {f: f, cache_key: "views/#{cache_key}"}
+      = render partial: fields_partial, locals: {f: f, cache_key: "views/#{cache_key}", settings_scope: settings_scope}
   - else
-    = render partial: fields_partial, locals: {f: f}
+    = render partial: fields_partial, locals: {f: f, settings_scope: settings_scope}
   
   - if Hancock::Faq.config.captcha
     - if Hancock::Faq.config.recaptcha_support
@@ -14,7 +25,7 @@
           span.error.recaptcha_error= @recaptcha_error
         = recaptcha_tags
     - elsif Hancock::Faq.config.simple_captcha_support
-      = render partial: "hancock/faq/questions/simple_captcha", locals: {f: f}
+      = render partial: "hancock/faq/questions/simple_captcha", locals: {f: f, settings_scope: settings_scope}
         
   - if Hancock::Faq.config.model_settings_support
     - label = settings_scope.submit_label(default: t('hancock.send'), label: "Текст на кнопке отправки")

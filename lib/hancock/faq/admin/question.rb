@@ -17,11 +17,12 @@ module Hancock::Faq
             field :categories
             field :enabled, :toggle
 
-            group :URL do
-              active false
-              field :slugs, :hancock_slugs
-              field :text_slug
-            end
+            group :URL, &Hancock::Admin.url_block
+            # group :URL do
+            #   active false
+            #   field :slugs, :hancock_slugs
+            #   field :text_slug
+            # end
 
             group 'Данные вопроса' do
               active false
@@ -40,30 +41,19 @@ module Hancock::Faq
               field :answer_author_name, :string
             end
 
-            group :seo do
-              active false
-              field :seo do
-                active true
-              end
-            end
-            group :sitemap_data do
-              active false
-              field :sitemap_data do
-                active true
-              end
+            if Hancock::Faq.config.seo_support
+              group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block
+              # group :seo do
+              #   active false
+              #   field :seo
+              # end
+              # group :sitemap_data do
+              #   active false
+              #   field :sitemap_data
+              # end
             end
 
-            fields.each_pair do |name, type|
-              if type.nil?
-                field name
-              else
-                if type.is_a?(Array)
-                  field name, type[0], &type[1]
-                else
-                  field name, type
-                end
-              end
-            end
+            Hancock::RailsAdminGroupPatch::hancock_cms_group(self, fields)
 
           end
 

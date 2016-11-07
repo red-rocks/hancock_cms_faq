@@ -8,12 +8,14 @@ module Hancock::Faq
           add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_Faq_faq_path
         end
 
-        helper_method :cache_fields?, :cache_key, :fields_partial, :settings_scope, :hancock_faq_update_captcha_path
+        helper_method :hancock_faq_update_captcha_path
       end
 
       def index
         @questions = question_class.enabled.sorted.to_a
         # index_crumbs
+        after_initialize
+        render locals: locals unless xhr_checker
       end
 
       def show
@@ -75,6 +77,9 @@ module Hancock::Faq
       def hancock_faq_update_captcha_path
         url_for(action: :update_captcha, time: Time.new.to_i, only_path: true)
       end
+      def is_cache_fields
+        cache_fields?
+      end
       def cache_fields?
         ['new', 'index'].include? action_name
       end
@@ -92,6 +97,18 @@ module Hancock::Faq
         else
           nil
         end
+      end
+      def recaptcha_options
+        {}
+      end
+      def locals
+        {
+          is_cache_fields:    is_cache_fields,
+          cache_key:          cache_key,
+          fields_partial:     fields_partial,
+          settings_scope:     settings_scope,
+          recaptcha_options:  recaptcha_options
+        }
       end
 
       private
@@ -116,7 +133,8 @@ module Hancock::Faq
       end
       def xhr_checker
         if request.xhr?
-          render layout: false
+          render layout: false, locals: locals
+          return true
         end
       end
       def after_initialize

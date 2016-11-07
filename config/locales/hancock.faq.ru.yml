@@ -7,6 +7,24 @@ ru:
       faq:
         recaptcha: Вы робот?
 
+    faq_plugin:
+      fields:
+        author_name:
+          label: 'ФИО'
+          placeholder: 'ФИО'
+        author_email:
+          label: E-mail
+          placeholder: E-mail
+        # phone:
+        #   label: Телефон
+        #   placeholder: Телефон
+        question_text:
+          label: Сообщение
+          placeholder: Сообщение
+        captcha:
+          label: "Введите код с картинки"
+          placeholder: "Введите код с картинки"
+
   mongoid:
     models:
       hancock/faq/question: Вопросы
@@ -37,25 +55,6 @@ ru:
           attributes:
             author_email:
               invalid_email_address: "Некорректный e-mail"
-
-
-    faq_plugin:
-      fields:
-        author_name:
-          label: 'ФИО'
-          placeholder: 'ФИО'
-        author_email:
-          label: E-mail
-          placeholder: E-mail
-        # phone:
-        #   label: Телефон
-        #   placeholder: Телефон
-        question_text:
-          label: Сообщение
-          placeholder: Сообщение
-        captcha:
-          label: "Введите код с картинки"
-          placeholder: "Введите код с картинки"
 
 
 
