@@ -1,0 +1,16 @@
+.input.simple_captcha.required.hancock_feedback_contact_message_captcha
+  - if Hancock::Feedback.config.captcha and Hancock::Feedback.config.simple_captcha_support
+    ruby:
+      options = {
+        label: t('hancock.feedback_plugin.fields.captcha.label'),
+        placeholder: t('hancock.feedback_plugin.fields.captcha.placeholder'),
+        update_captcha: link_to(' (обн)', hancock_feedback_update_captcha_path, class: 'update_captcha_link'),
+        object: Hancock::Feedback::ContactMessage.new
+      }
+      
+    - if Hancock::Feedback.config.model_settings_support
+      - options[:label] = settings_scope.simple_captcha_label(default: options[:label], label: "Заголовок поля Код проверки")
+      - options[:placeholder] = settings_scope.simple_captcha_placeholder(default: options[:placeholder], label: "Placeholder поля Код проверки")
+      = show_simple_captcha options
+    - else
+      = show_simple_captcha options

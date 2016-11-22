@@ -5,7 +5,7 @@ module Hancock::Faq
 
       included do
         if Hancock::Faq.config.breadcrumbs_on_rails_support
-          add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_Faq_faq_path
+          add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_faq_path
         end
 
         helper_method :hancock_faq_update_captcha_path
@@ -24,7 +24,7 @@ module Hancock::Faq
           redirect_to hancock_faq_question_path(@question), status_code: 301
           return
         end
-        @parent_seo_page = find_seo_page(hancock_faq_question_categories_path) if @seo_page.blank?
+        @parent_seo_page = find_seo_page(hancock_faq_categories_path) if @seo_page.blank?
         # item_crumbs
       end
 
@@ -74,7 +74,7 @@ module Hancock::Faq
         render layout: false
       end
 
-      def hancock_faq_update_captcha_path
+      def hancock_faq_question_update_captcha_path
         url_for(action: :update_captcha, time: Time.new.to_i, only_path: true)
       end
       def is_cache_fields

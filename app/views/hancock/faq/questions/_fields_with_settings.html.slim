@@ -1,3 +1,12 @@
+ruby:
+  cache_key ||= 'views/hancock_faq_question_fields'.freeze
+  if Hancock::Faq.config.model_settings_support
+    settings_scope ||= Hancock::Faq::Question.settings
+  elsif defined?(Settings)
+    settings_scope ||= Settings.ns('FAQ')
+  end
+
+
 - label = settings_scope.author_name_label(default: t('hancock.faq_plugin.fields.author_name.label'), label: "Заголовок поля ФИО", cache_keys: cache_key)
 - placeholder = settings_scope.author_name_placeholder(default: t('hancock.faq_plugin.fields.author_name.placeholder'), label: "Placeholder поля ФИО", cache_keys: cache_key)
 = f.input :author_name, label: label, input_html: {placeholder: placeholder, autofocus: true}

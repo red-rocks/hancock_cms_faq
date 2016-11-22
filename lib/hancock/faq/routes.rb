@@ -38,6 +38,8 @@ module ActionDispatch::Routing
       if !routes_config[:use_questions_path] and !routes_config[:classes][:questions].nil?
         resources routes_config[:classes][:questions].to_sym, only: routes_config[:actions][:questions], path: routes_config[:paths][:questions] do
           get '(/page/:page)', action: :index, on: :collection, as: "" if routes_config[:pagination][:questions]
+          get "sent"           => "#{routes_config[:classes][:questions]}#sent"
+          get "update_captcha" => "#{routes_config[:classes][:questions]}#update_captcha"
         end
       end
 
@@ -59,6 +61,8 @@ module ActionDispatch::Routing
           if routes_config[:use_questions_path] and !routes_config[:classes][:questions].nil?
             resources routes_config[:classes][:questions].to_sym, only: routes_config[:actions][:questions], path: routes_config[:paths][:questions], as: :hancock_faq_questions do
               get '(/page/:page)', action: :index, on: :collection, as: "" if routes_config[:pagination][:questions]
+              get "sent"           => "#{routes_config[:classes][:questions]}#sent"
+              get "update_captcha" => "#{routes_config[:classes][:questions]}#update_captcha"
             end
           end
 

@@ -1,10 +1,10 @@
 ruby:
   is_cache_fields ||= ['new', 'index'].include? action_name
-  cache_key ||= 'hancock_faq_contacts_fields'.freeze
+  cache_key ||= 'hancock_faq_question_fields'.freeze
   if Hancock::Faq.config.model_settings_support
     settings_scope ||= Hancock::Faq::Question.settings
   elsif defined?(Settings)
-    settings_scope ||= Settings.ns('faq')
+    settings_scope ||= Settings.ns('FAQ')
   end
   fields_partial ||= "hancock/faq/questions/#{(Hancock::Faq.config.model_settings_support ? 'fields_with_settings' : 'fields')}".freeze
   recaptcha_options ||= {}
