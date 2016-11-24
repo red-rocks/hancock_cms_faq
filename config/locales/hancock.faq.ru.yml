@@ -19,8 +19,8 @@ ru:
         #   label: Телефон
         #   placeholder: Телефон
         question_text:
-          label: Сообщение
-          placeholder: Сообщение
+          label: Вопрос
+          placeholder: Вопрос
         captcha:
           label: "Введите код с картинки"
           placeholder: "Введите код с картинки"

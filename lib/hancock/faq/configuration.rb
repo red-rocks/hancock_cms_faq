@@ -18,6 +18,8 @@ module Hancock::Faq
 
     attr_accessor :seo_support
 
+    attr_accessor :breadcrumbs_on_rails_support
+
     attr_accessor :localize
 
     attr_accessor :model_settings_support
