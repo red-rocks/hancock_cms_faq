@@ -6,8 +6,8 @@ module Hancock::Faq
       included do
 
         def index
-          @categories = category_class.enabled.sorted.to_a
-          @root_categories = category_class.enabled.roots.sorted.all.to_a
+          @categories = category_class.enabled.sorted.page(params[:page]).per(per_page)
+          @root_categories = category_class.enabled.roots.sorted.all
           # index_crumbs
         end
 
@@ -19,8 +19,8 @@ module Hancock::Faq
           end
           @seo_parent_page = find_seo_page(hancock_faq_categories_path)
 
-          @children = @category.children.enabled.sorted.all.to_a
-          @questions = @category.questions.enabled.sorted.all.to_a
+          @children = @category.children.enabled.sorted.all
+          @questions = @category.questions.enabled.sorted.all.page(params[:page]).per(questions_per_page)
 
           # index_crumbs
           # category_crumbs
@@ -40,6 +40,13 @@ module Hancock::Faq
         end
         def question_class
           Hancock::Faq::Question
+        end
+
+        def per_page
+          10
+        end
+        def questions_per_page
+          10
         end
 
         # def index_crumbs
@@ -75,7 +82,7 @@ module Hancock::Faq
         # end
 
       end
-      
+
     end
   end
 end

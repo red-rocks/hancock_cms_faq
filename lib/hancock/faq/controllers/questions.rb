@@ -12,7 +12,7 @@ module Hancock::Faq
             add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_faq_path
           end
 
-          @questions = question_class.enabled.sorted.to_a
+          @questions = question_class.enabled.sorted.page(params[:page]).per(per_page)
           # index_crumbs
           after_initialize
           render locals: locals unless xhr_checker
@@ -161,6 +161,10 @@ module Hancock::Faq
         end
         def question_class
           Hancock::Faq::Question
+        end
+
+        def per_page
+          10
         end
 
       end
