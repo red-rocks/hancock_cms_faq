@@ -56,10 +56,10 @@ module Hancock::Faq::Decorators
     #     # overrideable hook for updating message
     #   end
     #   def form_partial
-    #     "hancock/faq/question/form"
+    #     "hancock/faq/questions/form"
     #   end
     #   def success_partial
-    #     "hancock/faq/question/success"
+    #     "hancock/faq/questions/success"
     #   end
     #   def question_params
     #     params[:hancock_faq_question].permit(:question_text, :author_name, :author_email, :captcha, :captcha_key)
