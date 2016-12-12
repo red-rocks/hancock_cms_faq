@@ -9,12 +9,17 @@ module Hancock::Faq
             scopes [:by_date, :by_answered_date, :answered, :not_answered, :enabled, nil]
 
             field :enabled, :toggle
+            field :main_category
             field :categories
             field :full_name
           end
 
           edit do
-            field :categories
+            group :categories do
+              active false
+              field :main_category
+              field :categories
+            end
             field :enabled, :toggle
 
             group :URL, &Hancock::Admin.url_block

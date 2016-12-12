@@ -14,10 +14,18 @@ module Hancock::Faq
       include Hancock::Faq.orm_specific('Question')
 
       included do
+        belongs_to :main_category, class_name: "Hancock::Faq::Category", inverse_of: nil
+        before_validation :set_default_main_category
+        def set_default_main_category(force = false)
+          if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
+            self.main_category = self.categories.enabled.sorted.first
+          end
+        end
+
         if Hancock::Feedback.config.model_settings_support
           include RailsAdminModelSettings::ModelSettingable
         end
-        
+
         manual_slug :full_name
 
         if Hancock::Faq.config.simple_captcha_support
