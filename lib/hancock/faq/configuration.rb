@@ -17,6 +17,7 @@ module Hancock::Faq
     attr_accessor :simple_captcha_support
 
     attr_accessor :seo_support
+    attr_accessor :cache_support
 
     attr_accessor :breadcrumbs_on_rails_support
 
@@ -38,6 +39,7 @@ module Hancock::Faq
       @captcha = @recaptcha_support || @simple_captcha_support
 
       @seo_support = defined?(Hancock::Seo)
+      @cache_support  = defined?(Hancock::Cache)
 
       @breadcrumbs_on_rails_support = defined?(BreadcrumbsOnRails)
 

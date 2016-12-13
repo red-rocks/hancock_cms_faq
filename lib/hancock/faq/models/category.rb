@@ -17,13 +17,14 @@ module Hancock::Faq
         if Hancock::Feedback.config.model_settings_support
           include RailsAdminModelSettings::ModelSettingable
         end
-        
+
         manual_slug :name
 
         def self.manager_can_add_actions
           ret = [:nested_set]
           ret << :model_settings if Hancock::Faq.config.model_settings_support
           ret << :model_accesses if Hancock::Faq.config.user_abilities_support
+          ret << :hancock_touch if Hancock::Faq.config.cache_support
           ret += [:comments, :model_comments] if Hancock::Faq.config.ra_comments_support
           ret.freeze
         end
@@ -31,6 +32,7 @@ module Hancock::Faq
           ret = [:nested_set]
           ret << :model_settings if Hancock::Faq.config.model_settings_support
           ret << :model_accesses if Hancock::Faq.config.user_abilities_support
+          ret << :hancock_touch if Hancock::Faq.config.cache_support
           ret += [:comments, :model_comments] if Hancock::Faq.config.ra_comments_support
           ret.freeze
         end
