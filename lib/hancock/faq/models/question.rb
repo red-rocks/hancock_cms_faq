@@ -14,7 +14,11 @@ module Hancock::Faq
       include Hancock::Faq.orm_specific('Question')
 
       included do
-        belongs_to :main_category, class_name: "Hancock::Faq::Category", inverse_of: nil
+        if Hancock.rails4?
+          belongs_to :main_category, class_name: "Hancock::Faq::Category", inverse_of: nil
+        else
+          belongs_to :main_category, class_name: "Hancock::Faq::Category", inverse_of: nil, optional: true
+        end
         before_validation :set_default_main_category
         def set_default_main_category(force = false)
           if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
