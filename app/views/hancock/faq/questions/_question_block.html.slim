@@ -1,7 +1,7 @@
 - cache q do
   .qtable
-    - _category = q.category
-    -  if _category
+    - _category = q.main_category
+    -  if _category and _category.enabled
       = link_to _category.name, hancock_faq_category_path(_category), title: _category.name
 
     .qtext_block

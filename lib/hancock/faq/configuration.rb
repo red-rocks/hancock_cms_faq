@@ -34,20 +34,20 @@ module Hancock::Faq
 
       @captcha_error_message = "Код с картинки введен неверно"
 
-      @recaptcha_support = defined?(Recaptcha)
-      @simple_captcha_support = defined?(SimpleCaptcha)
+      @recaptcha_support = !!defined?(Recaptcha)
+      @simple_captcha_support = !!defined?(SimpleCaptcha)
       @captcha = @recaptcha_support || @simple_captcha_support
 
-      @seo_support = defined?(Hancock::Seo)
-      @cache_support  = defined?(Hancock::Cache)
+      @seo_support = !!defined?(Hancock::Seo)
+      @cache_support  = !!defined?(Hancock::Cache)
 
-      @breadcrumbs_on_rails_support = defined?(BreadcrumbsOnRails)
+      @breadcrumbs_on_rails_support = !!defined?(BreadcrumbsOnRails)
 
       @localize = Hancock.config.localize
 
-      @model_settings_support = defined?(RailsAdminModelSettings)
-      @user_abilities_support = defined?(RailsAdminUserAbilities)
-      @ra_comments_support = defined?(RailsAdminComments)
+      @model_settings_support = !!defined?(RailsAdminModelSettings)
+      @user_abilities_support = !!defined?(RailsAdminUserAbilities)
+      @ra_comments_support = !!defined?(RailsAdminComments)
     end
   end
 end
