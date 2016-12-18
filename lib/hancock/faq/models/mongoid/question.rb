@@ -7,11 +7,11 @@ module Hancock::Faq
         include Hancock::HtmlField
 
         included do
-          index({main_category_id: 1})
-          index({enabled: 1, lft: 1})
-          index({category_ids: 1})
-          index({answered: 1, answered_time: 1})
-          index({created_at: 1})
+          index({main_category_id: 1},            {background: true})
+          index({enabled: 1, lft: 1},             {background: true})
+          index({category_ids: 1},                {background: true})
+          index({answered: 1, answered_time: 1},  {background: true})
+          index({created_at: 1},                  {background: true})
 
           field :question_text
           hancock_cms_html_field :question_text_after_editing, localize: Hancock::Faq.configuration.localize

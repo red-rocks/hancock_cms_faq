@@ -9,6 +9,11 @@ module Hancock::Faq
         include Hancock::Seo::Seoable
         include Hancock::Seo::SitemapDataField
       end
+
+      if Hancock::Pages.config.cache_support
+        include Hancock::Cache::Cacheable
+      end
+      
       include ManualSlug
 
       include Hancock::Faq.orm_specific('Question')

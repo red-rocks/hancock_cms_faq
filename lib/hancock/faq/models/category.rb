@@ -11,6 +11,10 @@ module Hancock::Faq
       end
       include ManualSlug
 
+      if Hancock::Pages.config.cache_support
+        include Hancock::Cache::Cacheable
+      end
+
       include Hancock::Faq.orm_specific('Category')
 
       included do
