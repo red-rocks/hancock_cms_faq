@@ -13,7 +13,7 @@ module Hancock::Faq
       if Hancock::Pages.config.cache_support
         include Hancock::Cache::Cacheable
       end
-      
+
       include ManualSlug
 
       include Hancock::Faq.orm_specific('Question')
@@ -29,6 +29,8 @@ module Hancock::Faq
           if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
             self.main_category = self.categories.enabled.sorted.first
           end
+          self.categories << self.main_category if self.main_category
+          self
         end
 
         if Hancock::Feedback.config.model_settings_support
