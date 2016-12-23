@@ -24,7 +24,7 @@ module Hancock::Faq
         end
 
         def all_questions
-          question_class.any_in(category_ids: self.self_and_descendants.map(&:id))
+          question_class.any_in(category_ids: self.and_descendants.map(&:id))
         end
 
       end
