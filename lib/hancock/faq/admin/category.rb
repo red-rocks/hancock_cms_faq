@@ -1,15 +1,23 @@
 module Hancock::Faq
   module Admin
     module Category
-      def self.config(fields = {})
+      def self.config(nav_label = nil, fields = {})
+        if nav_label.is_a?(Hash)
+          nav_label, fields = nav_label[:nav_label], nav_label
+        elsif nav_label.is_a?(Array)
+          nav_label, fields = nil, nav_label
+        end
+
         Proc.new {
-          navigation_label "FAQ"
+          navigation_label(!nav_label.blank? ? nav_label : "FAQ")
 
           list do
             scopes [:sorted, :enabled, nil]
 
             field :enabled, :toggle
-            field :name
+            field :name do
+              searchable true
+            end
             # field :image
 
             field :questions do
@@ -23,6 +31,11 @@ module Hancock::Faq
                 }.join("<br>").html_safe
               end
             end
+
+            field :text_slug do
+              searchable true
+            end
+            group :content, &Hancock::Admin.content_block
           end
 
           edit do
@@ -38,12 +51,12 @@ module Hancock::Faq
             # end
             # field :image, :hancock_image
 
-            # group :content, &Hancock::Admin.content_block
-            group :content do
-              active false
-              field :excerpt, :hancock_html
-              field :content, :hancock_html
-            end
+            group :content, &Hancock::Admin.content_block
+            # group :content do
+            #   active false
+            #   field :excerpt, :hancock_html
+            #   field :content, :hancock_html
+            # end
 
             if Hancock::Faq.config.seo_support
               group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block

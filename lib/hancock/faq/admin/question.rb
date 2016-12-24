@@ -1,9 +1,15 @@
 module Hancock::Faq
   module Admin
     module Question
-      def self.config(fields = {})
+      def self.config(nav_label = nil, fields = {})
+        if nav_label.is_a?(Hash)
+          nav_label, fields = nav_label[:nav_label], nav_label
+        elsif nav_label.is_a?(Array)
+          nav_label, fields = nil, nav_label
+        end
+
         Proc.new {
-          navigation_label "FAQ"
+          navigation_label(!nav_label.blank? ? nav_label : "FAQ")
 
           list do
             scopes [:by_date, :by_answered_date, :answered, :not_answered, :enabled, nil]
@@ -11,15 +17,41 @@ module Hancock::Faq
             field :enabled, :toggle
             field :main_category
             field :categories
-            field :full_name
+            field :full_name do
+              searchable true
+            end
+
+            field :question_text do
+              searchable true
+            end
+            field :question_text_after_editing do
+              searchable true
+            end
+            field :author_name do
+              searchable true
+            end
+            field :author_name_text_after_editing do
+              searchable true
+            end
+            field :author_email do
+              searchable true
+            end
+
+            field :answer_text do
+              searchable true
+            end
+            field :answer_author_name do
+              searchable true
+            end
           end
 
           edit do
-            group :categories do
-              active false
-              field :main_category
-              field :categories
-            end
+            group :categories, &Hancock::Admin.categories_block
+            # group :categories do
+            #   active false
+            #   field :main_category
+            #   field :categories
+            # end
             field :enabled, :toggle
 
             group :URL, &Hancock::Admin.url_block
