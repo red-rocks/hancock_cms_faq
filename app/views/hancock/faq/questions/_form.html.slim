@@ -9,10 +9,11 @@ ruby:
   fields_partial ||= "hancock/faq/questions/#{(Hancock::Faq.config.model_settings_support ? 'fields_with_settings' : 'fields')}".freeze
   recaptcha_options ||= {}
   @question ||= Hancock::Faq::Question.new
+  _cache_helper ||= (Hancock::Catalog.config.cache_support ? :hancock_cache : :cache)
   
 = simple_form_for @question, url: hancock_faq_questions_path, html: {data: {remote: true }} do |f|
   - if is_cache_fields
-    - cache cache_key, skip_digest: true do
+    - send _cache_helper, cache_key, skip_digest: true do
       = render partial: fields_partial, locals: {f: f, cache_key: "views/#{cache_key}", settings_scope: settings_scope}
   - else
     = render partial: fields_partial, locals: {f: f, settings_scope: settings_scope}

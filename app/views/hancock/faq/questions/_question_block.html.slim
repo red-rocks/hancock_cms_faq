@@ -1,4 +1,6 @@
-- cache q do
+- _cache_helper = (Hancock::Faq.config.cache_support ? :hancock_cache : :cache)
+
+- send _cache_helper, q do
   .qtable
     - _category = q.main_category
     -  if _category and _category.enabled

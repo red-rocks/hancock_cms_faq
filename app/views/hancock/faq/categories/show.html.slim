@@ -1,3 +1,8 @@
+/ - _cache_helper = (Hancock::Faq.config.cache_support ? :hancock_cache : :cache)
+
+- _partial_path = (Hancock::Faq.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+= render _partial_path, obj: @category
+  
 h1= @category.name
 - @questions.each do |q|
   = link_to q.name.html_safe, hancock_faq_question_path(q), title: q.name

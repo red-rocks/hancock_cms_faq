@@ -1,2 +1,8 @@
+/ - _cache_helper = (Hancock::Faq.config.cache_support ? :hancock_cache : :cache)
+
+- _partial_path = (Hancock::Faq.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+= render _partial_path, obj: @question
+  
+
 .question_block{data-question-id="#{@question._id.to_s}"}
   = render partial: "hancock/faq/questions/question_block", locals: {q: @question}

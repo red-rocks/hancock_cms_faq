@@ -1,3 +1,7 @@
+- _partial_path = (Hancock::Faq.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+= render _partial_path, obj: (@seo_page || @seo_parent_page)
+  
+  
 - @questions.each do |q|
   .question_block{data-question-id="#{q._id.to_s}"}
     = render partial: "hancock/faq/questions/question_block", locals: {q: q}
