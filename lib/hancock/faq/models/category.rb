@@ -11,7 +11,7 @@ module Hancock::Faq
       end
       include ManualSlug
 
-      if Hancock::Pages.config.cache_support
+      if Hancock::Faq.config.cache_support
         include Hancock::Cache::Cacheable
       end
 
@@ -40,11 +40,21 @@ module Hancock::Faq
           ret += [:comments, :model_comments] if Hancock::Faq.config.ra_comments_support
           ret.freeze
         end
+
+        def question_class
+          self.class.question_class
+        end
+
       end
 
-      def question_class
-        Hancock::Faq::Question
+      class_methods do
+
+        def question_class
+          Hancock::Faq::Question
+        end
+
       end
     end
+    
   end
 end

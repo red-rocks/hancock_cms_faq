@@ -4,6 +4,7 @@ module Hancock::Faq
       extend ActiveSupport::Concern
 
       included do
+        include Hancock::Faq::Controllers::Base
 
         helper_method :hancock_faq_update_captcha_path
 
@@ -12,7 +13,10 @@ module Hancock::Faq
             add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_faq_path
           end
 
-          @questions = question_class.enabled.sorted.page(params[:page]).per(per_page)
+          @category = category_scope.find(params[:category_id]) if params[:category_id].present?
+          questions_scope = @category ? @category.questions : question_class
+
+          @questions = questions_scope.enabled.sorted.page(params[:page]).per(per_page)
           # index_crumbs
           after_initialize
           render locals: locals unless xhr_checker
@@ -22,6 +26,9 @@ module Hancock::Faq
           if Hancock::Faq.config.breadcrumbs_on_rails_support
             add_breadcrumb I18n.t('hancock.breadcrumbs.faq'), :hancock_faq_path
           end
+
+          @category = category_scope.find(params[:category_id]) if params[:category_id].present?
+          questions_scope = @category ? @category.questions : question_class
 
           @question = question_class.enabled.find(params[:id])
           if !@question.text_slug.blank? and @question.text_slug != params[:id]

@@ -10,7 +10,7 @@ module Hancock::Faq
         include Hancock::Seo::SitemapDataField
       end
 
-      if Hancock::Pages.config.cache_support
+      if Hancock::Faq.config.cache_support
         include Hancock::Cache::Cacheable
       end
 
@@ -77,9 +77,17 @@ module Hancock::Faq
       end
 
       def category_class
-        Hancock::Faq::Category
+        self.class.category_class
+      end
+
+      class_methods do
+
+        def category_class
+          Hancock::Faq::Category
+        end
       end
 
     end
+
   end
 end

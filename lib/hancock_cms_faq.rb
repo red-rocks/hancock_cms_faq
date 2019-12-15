@@ -25,6 +25,8 @@ module Hancock::Faq
   end
 
   module Controllers
+    autoload :Base,                     'hancock/faq/controllers/base'
+
     autoload :Questions,                'hancock/faq/controllers/questions'
     autoload :Categories,               'hancock/faq/controllers/categories'
   end

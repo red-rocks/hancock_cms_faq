@@ -4,6 +4,7 @@ module Hancock::Faq
       extend ActiveSupport::Concern
 
       included do
+        include Hancock::Faq::Controllers::Base
 
         def index
           @categories = category_class.enabled.sorted.page(params[:page]).per(per_page)
